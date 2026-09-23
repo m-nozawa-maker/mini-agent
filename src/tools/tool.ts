@@ -7,6 +7,9 @@ import { gcdTool } from './gcd'
 import { fileReadTool } from './fileRead'
 import { fileWriteTool } from './fileWrite'
 import { responseTool } from './response'
+import { primesTool } from './primes'
+import { sortTool } from './sort'
+import { showImageTool } from './showimage'
 
 export const ToolSchema = z.object({
   name: z.string().describe('ツール名'),
@@ -27,5 +30,8 @@ export const tools: Tool[] = [
   gcdTool,
   fileReadTool,
   fileWriteTool,
-  responseTool
+  responseTool,
+  primesTool,
+  showImageTool,
+  sortTool
 ]

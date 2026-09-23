@@ -1,5 +1,5 @@
-import { openai } from '@ai-sdk/openai'
-import { CoreMessage, generateText } from 'ai'
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
+import { ModelMessage, generateText } from 'ai'
 import pc from 'picocolors'
 import 'dotenv/config'
 
@@ -8,7 +8,11 @@ import { tools } from './tools/tool'
 
 import { MODEL } from './constant'
 
-const model = openai(MODEL)
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY
+})
+
+const model = openrouter.chat(MODEL)
 
 const toolCallRegex = /<tool[^>]*type="(?<name>[^"]+)"[^>]*>(?<parameters>[\s\S]*?)<\/tool>(?:\s*)$/
 
@@ -25,7 +29,7 @@ async function processToolCalls (text: string): Promise<string | undefined> {
 }
 
 async function main () {
-  const messages: CoreMessage[] = []
+  const messages: ModelMessage[] = []
   messages.push({ role: 'system', content: SYSTEM_PROMPT })
   while (true) {
     try {
@@ -48,8 +52,8 @@ async function main () {
   }
 }
 
-if (!process.env.OPENAI_API_KEY) {
-  console.error(pc.red('OPENAI_API_KEYが設定されていません。'))
+if (!process.env.OPENROUTER_API_KEY) {
+  console.error(pc.red('OPENROUTER_API_KEYが設定されていません。'))
   process.exit(1)
 }
 
